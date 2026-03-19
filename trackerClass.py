@@ -34,10 +34,10 @@ def get_current_date():
 class job_tracker:
     def __init__ (self, application:str = "applications.db", authenticator:str = "credential.db"):
         self.app_conn = sqlite3.connect(application)
-        self.auth_con = sqlite3.connect(authenticator)
+        self.auth_conn = sqlite3.connect(authenticator)
 
         self.app_cursor = self.app_conn.cursor()
-        self.auth_cursor = self.auth_con.cursor()
+        self.auth_cursor = self.auth_conn.cursor()
 
     # CREATE APPLICATION DB
     def create_Application_db(self):
@@ -50,7 +50,7 @@ class job_tracker:
                 JOB_URL TEXT,
                 STATUS NOT NULL,
                 INTERVIEW_DATE TEXT NOT NULL,
-                NEXT_ACTION TEXT
+                NEXT_ACTION TEXT)
         )
         """
 
@@ -65,7 +65,7 @@ class job_tracker:
                 COMPANY_NAME, TEXT NOT NULL,
                 USERNAME TEXT,
                 PASSWORD_MANAGEMENT TEXT,
-                JOB_URL TEXT
+                JOB_URL TEXT)
         )
         """
 
@@ -90,7 +90,7 @@ class job_tracker:
         """
 
         self.auth_cursor.execute(insertCredential, (company_name, username, password_management, job_url))
-        self.auth_con.commit()
+        self.auth_conn.commit()
     
     # FIND JOB APPLICATIONS
     def search_Application(self, company_name:str, job_title:str):
@@ -128,7 +128,7 @@ class job_tracker:
         """
 
         self.auth_cursor.execute(removeCredential, (company_name, username))
-        self.auth_con.commit()
+        self.auth_conn.commit()
 
     # UPDATE APPLICATION STATUS
     def update_Application_Status(self, company_name:str, job_title:str, new_status:str):
@@ -170,7 +170,7 @@ class job_tracker:
         """
         
         self.auth_cursor.execute(updateCredentials, (company_name, new_username, new_password))
-        self.auth_con.commit
+        self.auth_conn.commit
     
     # Updates the next step for a job
     def update_Next_Step(self, company_name:str, job_title:str, next_action:str, ):
